@@ -4,29 +4,32 @@ import UrlApi from '../../config/urlApi';
 
 class Category extends Component
 {
-    constructor(props) {
+    constructor(props) 
+    {
         super(props);
+
         this.state = {
-            isLoading: true
-        }
+            loading: true,
+            dataSource: null,
+        };
+    }
+     
+
+    componentDidMount() 
+    {
+        if (!this.props.dataSource) 
+            return;
+
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+        this.setState({
+            dataSource: ds.cloneWithRows(this.props.dataSource),
+            loading: false,
+        });
     }
 
-    componentDidMount() { 
-        return fetch(UrlApi.homeCategory)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        isLoading: false,
-                        dataSource: ds.cloneWithRows(responseJson),
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-    }
-
-    _renderRow(data) {
+    _renderRow(data) 
+    {
         return (
             <View style={styles.itemWrapper}>
                 <Image source={{uri: data.image}} style={styles.itemImage} />
@@ -35,13 +38,10 @@ class Category extends Component
         );
     }
 
-    render() {
-        if (this.state.isLoading) {
-            return (
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <ActivityIndicator />
-                </View>
-            );
+    render() 
+    {
+        if (this.state.loading) {
+            return null;
         }
 
         return (

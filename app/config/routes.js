@@ -23,6 +23,7 @@ const MenuIcon = (props) => {
             name="md-menu"
             size={28}
             color="#fff"
+            style={{padding: 16}}
             onPress={() => props.navigation.navigate('DrawerOpen')}
         />
     );
@@ -34,12 +35,33 @@ const BackIcon = (props) => {
             name="ios-arrow-back"
             size={28}
             color="#fff"
-            style={{paddingRight: 16}}
-            onPress={() => props.navigation.navigate('Home')}
+            style={{padding: 16}}
+            onPress={() => props.navigation.goBack(null)}
         />
     );
 };
 
+const SearchIcon = (props) => {
+    return (
+        <Icon 
+            name="md-search"
+            size={28}
+            color="#fff"
+            style={{padding: 16}}
+        />
+    );
+};
+
+const NotificationIcon = (props) => {
+    return (
+        <Icon 
+            name="md-notifications"
+            size={28}
+            color="#fff"
+            style={{padding: 16, paddingRight: 0}}
+        />
+    );
+};
 
 /* Stack Navigation: Home */
 export const StackHome = StackNavigator(
@@ -51,8 +73,8 @@ export const StackHome = StackNavigator(
                 headerLeft: <MenuIcon navigation={navigation} />,
                 headerRight: 
                     <View style={{ flexDirection: 'row' }}>
-                        <Icon style={{marginRight: 16}} name="md-notifications" size={26} color="#fff" />
-                        <Icon name="md-search" size={26} color="#fff" />
+                        <NotificationIcon />
+                        <SearchIcon />
                     </View>,
             }),
         },
@@ -63,8 +85,8 @@ export const StackHome = StackNavigator(
                 headerLeft: <BackIcon navigation={navigation} />,
                 headerRight: 
                 <View style={{ flexDirection: 'row' }}>
-                    <Icon style={{marginRight: 16}} name="md-notifications" size={26} color="#fff" />
-                    <Icon name="md-search" size={26} color="#fff" />
+                    <NotificationIcon />
+                    <SearchIcon />
                 </View>,
             }),
         },
@@ -77,7 +99,6 @@ export const StackHome = StackNavigator(
             },
             headerStyle: {            
                 backgroundColor: '#FB7A52',
-                padding: 16,
                 elevation: 0,
                 shadowOpacity: 0,
             }
@@ -93,6 +114,7 @@ export const StackCategory = StackNavigator(
             navigationOptions: ({ navigation }) => ({
                 title: 'Categories',
                 headerLeft: <BackIcon navigation={navigation} />,
+                headerRight: <Text></Text>
             }),
         },
     }, {
@@ -104,7 +126,6 @@ export const StackCategory = StackNavigator(
             },
             headerStyle: {            
                 backgroundColor: '#FB7A52',
-                padding: 16,
                 elevation: 0,
                 shadowOpacity: 0,
             }

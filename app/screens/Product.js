@@ -21,17 +21,21 @@ class Product extends Component
     }
 
     componentDidMount() { 
-        return fetch(UrlApi.productDetail + '?id=' + this.props.navigation.state.params.productId)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({
-                        isLoading: false,
-                        dataSource: responseJson,
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
+        this._makeRemoteRequest();
+    }
+
+    _makeRemoteRequest() {
+        fetch(UrlApi.productDetail + '?id=' + this.props.navigation.state.params.productId)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    isLoading: false,
+                    dataSource: responseJson,
                 });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() {
@@ -47,6 +51,42 @@ class Product extends Component
             <View style={styles.layout}>
                 <ProductImage productImages={this.state.dataSource.images} />
                 <Text style={styles.productName}>{this.state.dataSource.name}</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: 10}}>
+                    <Text style={{borderRightWidth: 1, borderBottomColor: '#ccc', paddingRight: 20, marginRight: 20, fontSize: 35}}>$45.99</Text>
+                    <View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon 
+                                name="md-star"
+                                size={28}
+                                color="#e5da09"
+                            />
+                            <Icon 
+                                name="md-star"
+                                size={28}
+                                color="#e5da09"
+                            />
+                            <Icon 
+                                name="md-star"
+                                size={28}
+                                color="#e5da09"
+                            />
+                            <Icon 
+                                name="md-star"
+                                size={28}
+                                color="#e5da09"
+                            />
+                            <Icon 
+                                name="md-star"
+                                size={28}
+                                color="#ccc"
+                            />
+                        </View>
+                        <Text>BASE ON 27 REVIEWS</Text>
+                    </View>
+                </View>
+                <View style={{paddingHorizontal: 20}}>
+                    <Button title="Add to basket" onPress={() => {}} />
+                </View>
             </View>
         );
     }

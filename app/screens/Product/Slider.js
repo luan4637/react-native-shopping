@@ -18,7 +18,7 @@ class Slider extends Component
         this.props.productImages.map((image, index) => {
             slider.push(
                 <View key={index} style={styles.sliderItem}>
-                    <Image style={styles.sliderImage} resizeMode="contain" source={{uri: image}} />
+                    <Image style={styles.sliderImage} source={{uri: image}} />
                 </View>
             )
         })                   
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     },
     sliderImage: {
         width,
-        flex: 1
+        flex: 1,
     },
     sliderPagination: {
         bottom: 5

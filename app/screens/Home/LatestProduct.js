@@ -10,58 +10,59 @@ const { width } = Dimensions.get('window');
 
 class LatestProduct extends Component
 {
-    constructor(props) {
+    constructor(props) 
+    {
         super(props);
+
         this.state = {
-            isLoading: true
+            loading: true,
+            dataSource: null,
         }
     }
 
-    componentDidMount() { 
-        return fetch(UrlApi.homeProduct)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        isLoading: false,
-                        dataSource: ds.cloneWithRows(responseJson),
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+    componentDidMount() 
+    {
+        if (!this.props.dataSource) 
+            return;
+
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+        this.setState({
+            dataSource: ds.cloneWithRows(this.props.dataSource),
+            loading: false,
+        });
     }
 
-    _renderRow(data) {
+    _renderRow(data) 
+    {
         return (
             <TouchableHighlight 
                 underlayColor={'#fff'} 
                 style={styles.itemWrapper} 
                 onPress={() => this.props.navigation.navigate('Product', {productId: 1, productName: data.name})}>
                 <View>
-                    <Image source={{uri: data.image}} style={styles.itemImage} />
+                    <Image source={{uri: data.image}} style={styles.itemImage} resizeMode={"cover"} />
                     <Text style={styles.itemName}>{data.name}</Text>
                 </View>
             </TouchableHighlight>
         );
     }
 
-    render() {
-        if (this.state.isLoading) {
-            return (
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <ActivityIndicator />
-                </View>
-            );
+    render() 
+    {
+        if (this.state.loading) {
+            return null;
         }
 
         return (
             <View style={styles.layout}>
+                <Text style={styles.heading}>Latest Products</Text>
                 <ListView
                     contentContainerStyle={styles.list}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow.bind(this)}
                     pageSize={this.state.dataSource.getRowCount()}
+                    removeClippedSubviews={true}
                 />
             </View>
         );
@@ -71,6 +72,12 @@ class LatestProduct extends Component
 const styles = StyleSheet.create({
     layout: {
         justifyContent: 'center',
+    },
+    heading: {
+        marginTop: 5,
+        marginLeft: 5,
+        marginBottom: 5,
+        fontSize: 16,
     },
     list: {
         flexDirection: 'row', 

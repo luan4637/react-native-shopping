@@ -12,33 +12,34 @@ class Slider extends Component
         super(props);
 
         this.state = {
-            isLoading: true,
+            loading: true,
         }
     }
 
     componentDidMount() 
     { 
-        return fetch(UrlApi.sliderBanner)
-                    .then((response) => response.json())
-                    .then((responseJson) => {
-                        this.setState({
-                            isLoading: false,
-                            dataSource: responseJson,
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
+        this._makeRemoteRequest();
+    }
+
+    _makeRemoteRequest() 
+    {
+        fetch(UrlApi.sliderBanner)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    loading: false,
+                    dataSource: responseJson,
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() 
     {
-        if (this.state.isLoading) {
-            return (
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <ActivityIndicator />
-                </View>
-            );
+        if (this.state.loading) {
+            return null;
         }
 
         let slider = [];
@@ -63,6 +64,12 @@ class Slider extends Component
 const styles = StyleSheet.create({
     sliderWrapper: {
         height: 150,
+    },
+    loading: {
+        height: 150, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: '#fff'
     },
     sliderItem: {
         flex: 1, 
